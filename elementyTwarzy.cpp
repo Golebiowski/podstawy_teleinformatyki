@@ -179,11 +179,11 @@ void detectAndDisplay(Mat frame)
 			rectangle(frame, faces[i], CV_RGB(255, 0, 0), 2);
 		for (int i = 0; i < eyes.size(); i++)
 			ellipse(frame, Point(eyes[i].x + eyes[i].width / 2, eyes[i].y + eyes[i].height / 2), Size(eyes[i].width / 2, eyes[i].height / 2), 360, 0, 360, CV_RGB(255, 255, 0), 2);
-
-		Point pt1n(nose[icn].x , nose[icn].y); 
-		Point pt2n((nose[icn].x + nose[icn].height ), (nose[icn].y + nose[icn].width /2));
-		rectangle(frame, pt1n, pt2n, Scalar(0, 255, 0), 2, 4, 0);
-
+		for (int i = 0; i < nose.size(); i++)
+			 rectangle(frame, nose[i], CV_RGB(0, 255, 0), 2);
+		for (int i = 0; i < mouth.size(); i++)
+			 rectangle(frame, mouth[i], CV_RGB(0, 10, 0), 2);
+		
 
 	}
 
