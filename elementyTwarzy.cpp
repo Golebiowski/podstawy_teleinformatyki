@@ -40,17 +40,17 @@ int main(void)
 		return (-1);
 	};
 
-	if (!eyes_cascade.load(eyes_cascade_name))        //£adowanie pliku ze sprawdzeniem poprawnoci 
+	if (!eyes_cascade.load(eyes_cascade_name))        //≈Åadowanie pliku ze sprawdzeniem poprawnoci 
 	{
 		cout << "Nie znaleziono pliku " << eyes_cascade_name << ".";
 		return -2;
 	}
-	if (!mouth_cascade.load(mouth_cascade_name))        //£adowanie pliku ze sprawdzeniem poprawnoci 
+	if (!mouth_cascade.load(mouth_cascade_name))        //≈Åadowanie pliku ze sprawdzeniem poprawnoci 
 	{
 		cout << "Nie znaleziono pliku " << mouth_cascade_name << ".";
 		return -2;
 	}
-	if (!nose_cascade.load(nose_cascade_name))        //£adowanie pliku ze sprawdzeniem poprawnoci 
+	if (!nose_cascade.load(nose_cascade_name))        //≈Åadowanie pliku ze sprawdzeniem poprawnoci 
 	{
 		cout << "Nie znaleziono pliku " << nose_cascade_name << ".";
 		return -2;
@@ -103,9 +103,10 @@ void detectAndDisplay(Mat frame)
 	equalizeHist(frame_gray, frame_gray);
 
 	// Detect faces
-	face_cascade.detectMultiScale(frame, faces, 1.1, 2, 0 | CASCADE_SCALE_IMAGE, Size(30, 30));
+	face_cascade.detectMultiScale(frame, faces, 1.1, 2, 0 | CASCADE_SCALE_IMAGE, Size(40, 40));
 	eyes_cascade.detectMultiScale(frame, eyes, 1.1, 2, 0 | CASCADE_SCALE_IMAGE, Size(10, 10));
 	nose_cascade.detectMultiScale(frame, nose, 1.1, 2, 0 | CASCADE_SCALE_IMAGE, Size(10, 10));
+	mouth_cascade.detectMultiScale(frame, mouth, 1.1, 2, 0 | CASCADE_SCALE_IMAGE, Size(10, 10));
 
 	// Set Region of Interest  // twarz
 	cv::Rect roi_b;
@@ -138,6 +139,8 @@ void detectAndDisplay(Mat frame)
 	int abo = 0; // ab is area of biggest element
 
 
+
+
 	for (ic = 0; ic < faces.size(); ic++) // Iterate through all current elements (detected faces)
 
 	{
@@ -148,36 +151,6 @@ void detectAndDisplay(Mat frame)
 		roi_c.height = (faces[ic].height);
 
 
-		//nos
-		roi_cn.x = nose[icn].x;
-		roi_cn.y = nose[icn].y;
-		roi_cn.width = (nose[icn].width);
-		roi_cn.height = (nose[icn].height);
-
-
-		//oczy
-		roi_co.x = eyes[ico].x;
-		roi_co.y = eyes[ico].y;
-		roi_co.width = (eyes[ico].width);
-		roi_co.height = (eyes[ico].height);
-
-
-
-
-
-		//twarz
-		ac = roi_c.width * roi_c.height; // Get the area of current element (detected face)
-
-		//nos
-		acn = roi_cn.width * roi_cn.height;
-
-
-
-		//oczy
-		aco = roi_co.width * roi_co.height;
-
-
-
 		//twarz
 		roi_b.x = faces[ib].x;
 		roi_b.y = faces[ib].y;
@@ -185,59 +158,7 @@ void detectAndDisplay(Mat frame)
 		roi_b.height = (faces[ib].height);
 
 
-		//nos
-		roi_b.x = nose[ibn].x;
-		roi_b.y = nose[ibn].y;
-		roi_b.width = (nose[ibn].width);
-		roi_b.height = (nose[ibn].height);
 
-		//oczy
-		roi_bo.x = eyes[ibo].x;
-		roi_bo.y = eyes[ibo].y;
-		roi_bo.width = (eyes[ibo].width);
-		roi_bo.height = (eyes[ibo].height);
-
-
-		//twarz
-		ab = roi_b.width * roi_b.height; // Get the area of biggest element, at beginning it is same as "current" element
-
-
-		//nos
-		abn = roi_bn.width * roi_bn.height;
-
-
-		//oczy
-		abo = roi_bo.width * roi_bo.height;
-
-		//twarz
-		if (ac > ab)
-		{
-			ib = ic;
-			roi_b.x = faces[ib].x;
-			roi_b.y = faces[ib].y;
-			roi_b.width = (faces[ib].width);
-			roi_b.height = (faces[ib].height);
-		}
-
-		//nos
-		if (acn > abn)
-		{
-			ibn = icn;
-			roi_bn.x = nose[ibn].x;
-			roi_bn.y = nose[ibn].y;
-			roi_bn.width = (nose[ibn].width);
-			roi_bn.height = (nose[ibn].height);
-		}
-
-		//	oczy
-		if (aco > abo)
-		{
-			ibo = ico;
-			roi_bo.x = eyes[ibo].x;
-			roi_bo.y = eyes[ibo].y;
-			roi_bo.width = (eyes[ibo].width);
-			roi_bo.height = (eyes[ibo].height);
-		}
 
 		crop = frame(roi_b);
 		resize(crop, res, Size(128, 128), 0, 0, INTER_LINEAR); // This will be needed later while saving images
@@ -252,20 +173,16 @@ void detectAndDisplay(Mat frame)
 
 		imwrite(filename, gray);
 
-		//twarz
-		Point pt1(faces[ic].x, faces[ic].y); // Display detected faces on main window - live stream from camera
-		Point pt2((faces[ic].x + faces[ic].height), (faces[ic].y + faces[ic].width));
-		rectangle(frame, pt1, pt2, Scalar(0, 255, 0), 2, 8, 0);
 
-		//nos
-		Point pt1n(nose[ic].x, nose[ic].y); // Display detected faces on main window - live stream from camera
-		Point pt2n((nose[ic].x + nose[ic].height), (nose[ic].y + nose[ic].width));
-		rectangle(frame, pt1n, pt2n, Scalar(0, 0, 255), 2, 8, 0);
 
-		//oczy
-		Point pt1o(eyes[ic].x, eyes[ic].y); // Display detected faces on main window - live stream from camera
-		Point pt2o((eyes[ic].x + eyes[ic].height), (eyes[ic].y + eyes[ic].width));
-		rectangle(frame, pt1o, pt2o, Scalar(255, 0, 0), 2, 8, 0);
+		for (int i = 0; i < faces.size(); i++)
+			rectangle(frame, faces[i], CV_RGB(255, 0, 0), 2);
+		for (int i = 0; i < eyes.size(); i++)
+			ellipse(frame, Point(eyes[i].x + eyes[i].width / 2, eyes[i].y + eyes[i].height / 2), Size(eyes[i].width / 2, eyes[i].height / 2), 360, 0, 360, CV_RGB(255, 255, 0), 2);
+
+		Point pt1n(nose[icn].x , nose[icn].y); 
+		Point pt2n((nose[icn].x + nose[icn].height ), (nose[icn].y + nose[icn].width /2));
+		rectangle(frame, pt1n, pt2n, Scalar(0, 255, 0), 2, 4, 0);
 
 
 	}
