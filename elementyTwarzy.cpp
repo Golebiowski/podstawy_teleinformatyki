@@ -174,6 +174,32 @@ void detectAndDisplay(Mat frame)
 		imwrite(filename, gray);
 
 
+		string nazwisko1 = "Golebiowski";
+		double wspGolebiowski = 0.9359;
+		double widthFace = (double)faces[ib].width;
+		double heightFace = (double)faces[ib].height;
+		Factor = heightFace / widthFace;
+		        if (Factor > wsp - (wsp*0.005) && Factor > wsp + (wsp*0.005))
+		        {
+		          sstm1 << nazwisko1;
+		          text1 = sstm1.str();
+		          putText(frame, text1, cvPoint(30, 60),
+		          FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(0, 0, 255), 1, CV_AA);
+		        }
+		 
+		string nazwisko2 = "Leitgeber";
+		double wspLeitgeber = 0.9367;
+		double widthFace = (double)faces[ib].width;
+		double heightFace = (double)faces[ib].height;
+		Factor = heightFace / widthFace;
+		        if (Factor > wsp - (wsp*0.005) && Factor > wsp + (wsp*0.005))
+		       	{
+		          sstm1 << nazwisko2;
+		          text1 = sstm1.str();
+		          putText(frame, text1, cvPoint(30, 60),
+		          FONT_HERSHEY_COMPLEX_SMALL, 0.8, cvScalar(0, 0, 255), 1, CV_AA);
+		        }
+
 
 		for (int i = 0; i < faces.size(); i++)
 			rectangle(frame, faces[i], CV_RGB(255, 0, 0), 2);
